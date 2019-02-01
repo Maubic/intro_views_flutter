@@ -48,9 +48,12 @@ class PageBubble extends StatelessWidget {
               child: (viewModel.iconAssetPath != null &&
                       viewModel.iconAssetPath != "")
                   // ignore: conflicting_dart_import
-                  ? Image.asset(
-                      viewModel.iconAssetPath,
-                      color: viewModel.iconColor,
+                  ? FractionallySizedBox(
+                      widthFactor: 0.8,
+                      child: Image.asset(
+                        viewModel.iconAssetPath,
+                        color: viewModel.iconColor,
+                      ),
                     )
                   : viewModel.bubbleInner != null
                       ? Transform.scale(

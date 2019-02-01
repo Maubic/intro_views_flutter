@@ -40,20 +40,24 @@ class Page extends StatelessWidget {
 
   /// when device is Portrait place title, image and body in a column
   Widget _buildPortraitPage() {
-    return new Column(
+    return Column(
       mainAxisAlignment: columnMainAxisAlignment,
       mainAxisSize: MainAxisSize.max,
       children: <Widget>[
         Flexible(
-          flex: 1,
-          child: new _TitlePageTransform(
+          flex: 2,
+          child: Container(),
+        ),
+        Flexible(
+          flex: 4,
+          child: new _ImagePageTransform(
             percentVisible: percentVisible,
             pageViewModel: pageViewModel,
           ),
         ), //Transform
-        Expanded(
-          flex: 4,
-          child: new _ImagePageTransform(
+        Flexible(
+          flex: 2,
+          child: new _TitlePageTransform(
             percentVisible: percentVisible,
             pageViewModel: pageViewModel,
           ),
@@ -65,6 +69,13 @@ class Page extends StatelessWidget {
             pageViewModel: pageViewModel,
           ),
         ), //Transform
+        Flexible(
+          flex: 1,
+          child: Container(),
+        ),
+        Container(
+          height: 75,
+        ),
       ],
     );
   }
@@ -122,10 +133,8 @@ class _BodyPageTransform extends StatelessWidget {
       transform:
           new Matrix4.translationValues(0.0, 30.0 * (1 - percentVisible), 0.0),
       child: new Padding(
-        padding: const EdgeInsets.only(
-          bottom: 75.0,
-          left: 10.0,
-          right: 10.0,
+        padding: const EdgeInsets.symmetric(
+          horizontal: 10.0,
         ),
         child: DefaultTextStyle.merge(
           style: pageViewModel.bodyTextStyle,
@@ -155,15 +164,10 @@ class _ImagePageTransform extends StatelessWidget {
       //Used for vertical transformation
       transform:
           new Matrix4.translationValues(0.0, 50.0 * (1 - percentVisible), 0.0),
-      child: new Padding(
-        padding: new EdgeInsets.only(
-          top: 20.0,
-          bottom: 40.0,
-        ),
-        child: new Container(
-          child: pageViewModel.mainImage, //Loading main
-        ), //Container
-      ), //Padding
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 20),
+        child: pageViewModel.mainImage,
+      ), //Loading main
     );
   }
 }
@@ -186,17 +190,9 @@ class _TitlePageTransform extends StatelessWidget {
       //Used for vertical transformation
       transform:
           new Matrix4.translationValues(0.0, 30.0 * (1 - percentVisible), 0.0),
-      child: new Padding(
-        padding: new EdgeInsets.only(
-          top: 60.0,
-          bottom: 30.0,
-          left: 10.0,
-          right: 10.0,
-        ),
-        child: DefaultTextStyle.merge(
-          style: pageViewModel.titleTextStyle,
-          child: pageViewModel.title,
-        ),
+      child: DefaultTextStyle.merge(
+        style: pageViewModel.titleTextStyle,
+        child: pageViewModel.title,
       ), //Padding
     );
   }
