@@ -51,7 +51,7 @@ class PageViewModel {
       this.iconImageAssetPath,
       this.bubbleBackgroundColor = const Color(0x88FFFFFF),
       this.iconColor,
-      @required this.title,
+      this.title,
       @required this.body,
       @required this.mainImage,
       this.bubble,

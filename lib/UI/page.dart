@@ -55,13 +55,15 @@ class Page extends StatelessWidget {
             pageViewModel: pageViewModel,
           ),
         ), //Transform
-        Flexible(
-          flex: 2,
-          child: new _TitlePageTransform(
-            percentVisible: percentVisible,
-            pageViewModel: pageViewModel,
-          ),
-        ), //Transform
+        pageViewModel.title != null
+            ? Flexible(
+                flex: 2,
+                child: new _TitlePageTransform(
+                  percentVisible: percentVisible,
+                  pageViewModel: pageViewModel,
+                ),
+              )
+            : Container(), //Transform
         Flexible(
           flex: 2,
           child: new _BodyPageTransform(
@@ -87,22 +89,23 @@ class Page extends StatelessWidget {
       mainAxisSize: MainAxisSize.max,
       children: <Widget>[
         Expanded(
-          child: new _ImagePageTransform(
+          child: _ImagePageTransform(
             percentVisible: percentVisible,
             pageViewModel: pageViewModel,
           ),
         ), //Transform
-
-        new Flexible(
-          child: new Column(
+        Flexible(
+          child: Column(
             mainAxisAlignment: columnMainAxisAlignment,
             mainAxisSize: MainAxisSize.max,
             children: <Widget>[
-              new _TitlePageTransform(
-                percentVisible: percentVisible,
-                pageViewModel: pageViewModel,
-              ), //Transform
-              new _BodyPageTransform(
+              pageViewModel.title != null
+                  ? _TitlePageTransform(
+                      percentVisible: percentVisible,
+                      pageViewModel: pageViewModel,
+                    )
+                  : Container(), //Transform
+              _BodyPageTransform(
                 percentVisible: percentVisible,
                 pageViewModel: pageViewModel,
               ), //Transform
