@@ -46,16 +46,21 @@ class PageViewModel {
   /// gets overriden by [iconImageAssetPath]
   final Widget bubble;
 
-  PageViewModel(
-      {this.pageColor,
-      this.iconImageAssetPath,
-      this.bubbleBackgroundColor = const Color(0x88FFFFFF),
-      this.iconColor,
-      this.title,
-      @required this.body,
-      @required this.mainImage,
-      this.bubble,
-      this.textStyle});
+  /// Whether the page will be just an image
+  final bool imageOnly;
+
+  PageViewModel({
+    this.pageColor,
+    this.iconImageAssetPath,
+    this.bubbleBackgroundColor = const Color(0x88FFFFFF),
+    this.iconColor,
+    this.title,
+    this.body,
+    @required this.mainImage,
+    this.bubble,
+    this.textStyle,
+    this.imageOnly = false,
+  });
 
   TextStyle get titleTextStyle {
     return TextStyle(color: Colors.white, fontSize: 34.0).merge(this.textStyle);
