@@ -232,6 +232,7 @@ class _IntroViewsFlutterState extends State<IntroViewsFlutter>
       //Stack is used to place components over one another.
       resizeToAvoidBottomPadding: false,
       body: Stack(
+        fit: StackFit.expand,
         children: <Widget>[
           Page(
             pageViewModel: pages[activePageIndex],

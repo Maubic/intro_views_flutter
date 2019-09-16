@@ -22,10 +22,12 @@ class Page extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new Container(
-      padding: pageViewModel.imageOnly
+      padding: pageViewModel.type == PageType.imageOnly
           ? const EdgeInsets.symmetric(vertical: 8.0)
-          : const EdgeInsets.all(8.0),
-      width: double.infinity,
+          : pageViewModel.type == PageType.fullscreen
+              ? const EdgeInsets.all(0.0)
+              : const EdgeInsets.all(8.0),
+      //width: double.infinity,
       color: pageViewModel.pageColor,
       child: new Opacity(
         //Opacity is used to create fade in effect
@@ -42,55 +44,90 @@ class Page extends StatelessWidget {
 
   /// when device is Portrait place title, image and body in a column
   Widget _buildPortraitPage() {
-    if (pageViewModel.imageOnly) {
-      return Center(
-        child: _ImagePageTransform(
-          percentVisible: percentVisible,
-          pageViewModel: pageViewModel,
-          imageOnly: true,
-        ),
-      );
-    } else {
-      return Column(
-        mainAxisAlignment: columnMainAxisAlignment,
-        mainAxisSize: MainAxisSize.max,
-        children: <Widget>[
-          Flexible(
-            flex: 2,
-            child: Container(),
+    switch (pageViewModel.type) {
+      case PageType.imageOnly:
+        return Center(
+          child: _ImagePageTransform(
+            percentVisible: percentVisible,
+            pageViewModel: pageViewModel,
           ),
-          Flexible(
-            flex: 4,
-            child: new _ImagePageTransform(
-              percentVisible: percentVisible,
-              pageViewModel: pageViewModel,
-            ),
-          ), //Transform
-          pageViewModel.title != null
-              ? Flexible(
-                  flex: 2,
-                  child: new _TitlePageTransform(
-                    percentVisible: percentVisible,
-                    pageViewModel: pageViewModel,
+        );
+
+      case PageType.fullscreen:
+        return LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints constraints) {
+            return Stack(
+              fit: StackFit.expand,
+              alignment: Alignment.center,
+              children: <Widget>[
+                _ImagePageTransform(
+                  percentVisible: percentVisible,
+                  pageViewModel: pageViewModel,
+                ),
+                Positioned(
+                  left: 32.0,
+                  width: constraints.maxWidth * 0.75,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      _TitlePageTransform(
+                        percentVisible: percentVisible,
+                        pageViewModel: pageViewModel,
+                      ),
+                      SizedBox(height: 64.0),
+                      _BodyPageTransform(
+                        percentVisible: percentVisible,
+                        pageViewModel: pageViewModel,
+                      ),
+                    ],
                   ),
-                )
-              : Container(), //Transform
-          Flexible(
-            flex: 2,
-            child: new _BodyPageTransform(
-              percentVisible: percentVisible,
-              pageViewModel: pageViewModel,
+                ),
+              ],
+            );
+          },
+        );
+
+      case PageType.normal:
+        return Column(
+          mainAxisAlignment: columnMainAxisAlignment,
+          mainAxisSize: MainAxisSize.max,
+          children: <Widget>[
+            Flexible(
+              flex: 2,
+              child: Container(),
             ),
-          ), //Transform
-          Flexible(
-            flex: 1,
-            child: Container(),
-          ),
-          Container(
-            height: 75,
-          ),
-        ],
-      );
+            Flexible(
+              flex: 4,
+              child: new _ImagePageTransform(
+                percentVisible: percentVisible,
+                pageViewModel: pageViewModel,
+              ),
+            ), //Transform
+            pageViewModel.title != null
+                ? Flexible(
+                    flex: 2,
+                    child: new _TitlePageTransform(
+                      percentVisible: percentVisible,
+                      pageViewModel: pageViewModel,
+                    ),
+                  )
+                : Container(), //Transform
+            Flexible(
+              flex: 2,
+              child: new _BodyPageTransform(
+                percentVisible: percentVisible,
+                pageViewModel: pageViewModel,
+              ),
+            ), //Transform
+            Flexible(
+              flex: 1,
+              child: Container(),
+            ),
+            Container(
+              height: 75,
+            ),
+          ],
+        );
     }
   }
 
@@ -147,16 +184,21 @@ class _BodyPageTransform extends StatelessWidget {
       //Used for vertical transformation
       transform:
           new Matrix4.translationValues(0.0, 30.0 * (1 - percentVisible), 0.0),
-      child: new Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 10.0,
-        ),
-        child: DefaultTextStyle.merge(
-          style: pageViewModel.bodyTextStyle,
-          textAlign: TextAlign.center,
-          child: pageViewModel.body,
-        ),
-      ), //Padding
+      child: pageViewModel.type == PageType.normal
+          ? Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 10.0,
+              ),
+              child: DefaultTextStyle.merge(
+                style: pageViewModel.bodyTextStyle,
+                textAlign: TextAlign.center,
+                child: pageViewModel.body,
+              ),
+            )
+          : DefaultTextStyle.merge(
+              style: pageViewModel.bodyTextStyle,
+              child: pageViewModel.body,
+            ),
     );
   }
 }
@@ -164,7 +206,6 @@ class _BodyPageTransform extends StatelessWidget {
 /// Main Image of the Page
 class _ImagePageTransform extends StatelessWidget {
   final double percentVisible;
-  final bool imageOnly;
 
   final PageViewModel pageViewModel;
 
@@ -172,7 +213,6 @@ class _ImagePageTransform extends StatelessWidget {
     Key key,
     @required this.percentVisible,
     @required this.pageViewModel,
-    this.imageOnly = false,
   }) : super(key: key);
 
   @override
@@ -181,12 +221,12 @@ class _ImagePageTransform extends StatelessWidget {
       //Used for vertical transformation
       transform:
           new Matrix4.translationValues(0.0, 50.0 * (1 - percentVisible), 0.0),
-      child: imageOnly
-          ? pageViewModel.mainImage
-          : Padding(
+      child: pageViewModel.type == PageType.normal
+          ? Padding(
               padding: EdgeInsets.symmetric(horizontal: 20),
               child: pageViewModel.mainImage,
-            ), //Loading main
+            ) //Loading main
+          : pageViewModel.mainImage,
     );
   }
 }

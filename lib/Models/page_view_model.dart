@@ -46,8 +46,8 @@ class PageViewModel {
   /// gets overriden by [iconImageAssetPath]
   final Widget bubble;
 
-  /// Whether the page will be just an image
-  final bool imageOnly;
+  /// The page type
+  final PageType type;
 
   PageViewModel({
     this.pageColor,
@@ -59,7 +59,7 @@ class PageViewModel {
     @required this.mainImage,
     this.bubble,
     this.textStyle,
-    this.imageOnly = false,
+    this.type = PageType.normal,
   });
 
   TextStyle get titleTextStyle {
@@ -69,4 +69,10 @@ class PageViewModel {
   TextStyle get bodyTextStyle {
     return TextStyle(color: Colors.white, fontSize: 18.0).merge(this.textStyle);
   }
+}
+
+enum PageType {
+  normal,
+  imageOnly,
+  fullscreen,
 }
