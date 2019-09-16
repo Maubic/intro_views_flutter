@@ -197,9 +197,10 @@ class _ButtonPageTransform extends StatelessWidget {
       transform:
           new Matrix4.translationValues(0.0, 30.0 * (1 - percentVisible), 0.0),
       child: RaisedButton(
-        onPressed: onPressed,
+        onPressed: onPressed ?? () {},
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(32.0)),
+        color: pageViewModel.buttonColor,
         child: pageViewModel.buttonText,
       ),
     );

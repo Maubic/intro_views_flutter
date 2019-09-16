@@ -50,6 +50,7 @@ class PageViewModel {
   final PageType type;
 
   final Widget buttonText;
+  final Color buttonColor;
 
   PageViewModel({
     this.pageColor,
@@ -63,6 +64,7 @@ class PageViewModel {
     this.textStyle,
     this.type = PageType.normal,
     this.buttonText,
+    this.buttonColor,
   });
 
   TextStyle get titleTextStyle {
