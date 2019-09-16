@@ -12,11 +12,16 @@ class Page extends StatelessWidget {
   /// [MainAxisAligment]
   final MainAxisAlignment columnMainAxisAlignment;
 
+  final VoidCallback onPressedDoneButton; //Callback for Done Button
+  final bool last;
+
   //Constructor
   Page({
     this.pageViewModel,
     this.percentVisible = 1.0,
     this.columnMainAxisAlignment = MainAxisAlignment.spaceAround,
+    this.onPressedDoneButton,
+    this.last = false,
   });
 
   @override
@@ -74,11 +79,19 @@ class Page extends StatelessWidget {
                         percentVisible: percentVisible,
                         pageViewModel: pageViewModel,
                       ),
-                      SizedBox(height: 64.0),
+                      const SizedBox(height: 32.0),
                       _BodyPageTransform(
                         percentVisible: percentVisible,
                         pageViewModel: pageViewModel,
                       ),
+                      const SizedBox(height: 32.0),
+                      last
+                          ? _ButtonPageTransform(
+                              percentVisible: percentVisible,
+                              pageViewModel: pageViewModel,
+                              onPressed: onPressedDoneButton,
+                            )
+                          : const SizedBox(),
                     ],
                   ),
                 ),
@@ -162,6 +175,33 @@ class Page extends StatelessWidget {
           ), // Column
         ),
       ],
+    );
+  }
+}
+
+class _ButtonPageTransform extends StatelessWidget {
+  final double percentVisible;
+  final PageViewModel pageViewModel;
+  final VoidCallback onPressed;
+
+  const _ButtonPageTransform({
+    Key key,
+    @required this.percentVisible,
+    @required this.pageViewModel,
+    this.onPressed,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return new Transform(
+      transform:
+          new Matrix4.translationValues(0.0, 30.0 * (1 - percentVisible), 0.0),
+      child: RaisedButton(
+        onPressed: onPressed,
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(32.0)),
+        child: pageViewModel.buttonText,
+      ),
     );
   }
 }

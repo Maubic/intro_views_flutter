@@ -49,6 +49,8 @@ class PageViewModel {
   /// The page type
   final PageType type;
 
+  final Widget buttonText;
+
   PageViewModel({
     this.pageColor,
     this.iconImageAssetPath,
@@ -60,6 +62,7 @@ class PageViewModel {
     this.bubble,
     this.textStyle,
     this.type = PageType.normal,
+    this.buttonText,
   });
 
   TextStyle get titleTextStyle {

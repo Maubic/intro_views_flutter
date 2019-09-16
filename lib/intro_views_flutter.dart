@@ -36,6 +36,9 @@ class IntroViewsFlutter extends StatefulWidget {
   /// Whether you want to show the back button or not.
   final bool showBackButton;
 
+  /// Whether you want to show the back button or not.
+  final bool showDoneButton;
+
   /// TextStyles for done, skip Buttons
   ///
   /// overrides [pageButtonFontFamily] [pageButtonsColor] [pageButtonTextSize]
@@ -101,6 +104,7 @@ class IntroViewsFlutter extends StatefulWidget {
     this.onTapBackButton,
     this.showNextButton = false,
     this.showBackButton = false,
+    this.showDoneButton = true,
     this.pageButtonTextSize = 18.0,
     this.pageButtonFontFamily,
     this.onTapSkipButton,
@@ -238,14 +242,18 @@ class _IntroViewsFlutterState extends State<IntroViewsFlutter>
             pageViewModel: pages[activePageIndex],
             percentVisible: 1.0,
             columnMainAxisAlignment: widget.columnMainAxisAlignment,
+            onPressedDoneButton: widget.onTapDoneButton,
+            last: activePageIndex == pages.length - 1,
           ), //Pages
           PageReveal(
             //next page reveal
             revealPercent: slidePercent,
             child: Page(
-                pageViewModel: pages[nextPageIndex],
-                percentVisible: slidePercent,
-                columnMainAxisAlignment: widget.columnMainAxisAlignment),
+              pageViewModel: pages[nextPageIndex],
+              percentVisible: slidePercent,
+              columnMainAxisAlignment: widget.columnMainAxisAlignment,
+              last: nextPageIndex == pages.length - 1,
+            ),
           ), //PageReveal
 
           PagerIndicator(
@@ -282,6 +290,7 @@ class _IntroViewsFlutterState extends State<IntroViewsFlutter>
             showSkipButton: widget.showSkipButton,
             showNextButton: widget.showNextButton,
             showBackButton: widget.showBackButton,
+            showDoneButton: widget.showDoneButton,
             onPressedNextButton: () {
               //method executed on pressing next button
               setState(() {
