@@ -167,7 +167,7 @@ class _IntroViewsFlutterState extends State<IntroViewsFlutter>
         //if the user has done dragging
         else if (event.updateType == UpdateType.doneDragging) {
           //Auto completion of event using Animated page dragger.
-          if (slidePercent > 0.5) {
+          if (slidePercent > 0.10) {
             animatedPageDragger = AnimatedPageDragger(
               slideDirection: slideDirection,
               transitionGoal: TransitionGoal.open,
