@@ -232,15 +232,11 @@ class _IntroViewsFlutterState extends State<IntroViewsFlutter>
     _timer?.cancel();
     if (this.activePageIndex < widget.pages.length - 1) {
       _initializeTimer();
-      setState(() {
-        activePageIndex = activePageIndex + 1;
-        nextPageIndex = nextPageIndex + 1;
-        // after next pressed invoke function
-        // this can be used for analytics/page transition
-        if (widget.onTapNextButton != null) {
-          widget.onTapNextButton();
-        }
-      });
+      // add two slide events to start the animation
+      slideUpdateStream.add(
+          SlideUpdate(SlideDirection.rightToLeft, 0.15, UpdateType.dragging));
+      slideUpdateStream.add(SlideUpdate(
+          SlideDirection.rightToLeft, 0.0, UpdateType.doneDragging));
     }
   }
 
