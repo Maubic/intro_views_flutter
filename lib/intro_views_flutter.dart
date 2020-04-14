@@ -221,7 +221,7 @@ class _IntroViewsFlutterState extends State<IntroViewsFlutter>
     if (_timer != null) {
       _timer.cancel();
     }
-    _timer = Timer(const Duration(seconds: 2), _swipePage);
+    _timer = Timer(const Duration(seconds: 10), _swipePage);
   }
 
   void _handleUserInteraction([_]) {
