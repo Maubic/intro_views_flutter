@@ -6,6 +6,8 @@ const FULL_TARNSITION_PX = 300.0;
 
 const PERCENT_PER_MILLISECOND = 0.00125;
 
+const AUTOSWIPE_MILLISECONDS = 1000000;
+
 enum SlideDirection {
   leftToRight,
   rightToLeft,

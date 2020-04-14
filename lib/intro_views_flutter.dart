@@ -95,6 +95,11 @@ class IntroViewsFlutter extends StatefulWidget {
   /// default to 300.0
   final double fullTransition;
 
+  // ajust how much time to wait for an autoswipe event to happen.
+  //
+  // default to 1000 seconds
+  final int autoSwipeDelay;
+
   IntroViewsFlutter(
     this.pages, {
     Key key,
@@ -117,6 +122,7 @@ class IntroViewsFlutter extends StatefulWidget {
     this.doneButtonPersist = false,
     this.columnMainAxisAlignment = MainAxisAlignment.spaceAround,
     this.fullTransition = FULL_TARNSITION_PX,
+    this.autoSwipeDelay = AUTOSWIPE_MILLISECONDS,
   }) : super(key: key);
 
   @override
@@ -130,6 +136,7 @@ class _IntroViewsFlutterState extends State<IntroViewsFlutter>
     with TickerProviderStateMixin {
   // timer for autoswipe
   Timer _timer;
+  int autoSwipeDelay;
 
   StreamController<SlideUpdate>
       // ignore: close_sinks
@@ -146,6 +153,7 @@ class _IntroViewsFlutterState extends State<IntroViewsFlutter>
 
   @override
   void initState() {
+    autoSwipeDelay = widget.autoSwipeDelay;
     //Stream Controller initialization
     slideUpdateStream = StreamController<SlideUpdate>();
     //listening to updates of stream controller
@@ -221,7 +229,7 @@ class _IntroViewsFlutterState extends State<IntroViewsFlutter>
     if (_timer != null) {
       _timer.cancel();
     }
-    _timer = Timer(const Duration(seconds: 2), _swipePage);
+    _timer = Timer(Duration(milliseconds: autoSwipeDelay), _swipePage);
   }
 
   void _handleUserInteraction([_]) {
