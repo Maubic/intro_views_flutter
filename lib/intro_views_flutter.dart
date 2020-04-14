@@ -128,6 +128,9 @@ class IntroViewsFlutter extends StatefulWidget {
 
 class _IntroViewsFlutterState extends State<IntroViewsFlutter>
     with TickerProviderStateMixin {
+  // timer for autoswipe
+  Timer _timer;
+
   StreamController<SlideUpdate>
       // ignore: close_sinks
       slideUpdateStream; //Stream controller is used to get all the updates when user slides across screen.
@@ -210,6 +213,35 @@ class _IntroViewsFlutterState extends State<IntroViewsFlutter>
     });
 
     super.initState();
+    _initializeTimer();
+  }
+
+  // initialize timer when handles user input
+  void _initializeTimer() {
+    if (_timer != null) {
+      _timer.cancel();
+    }
+    _timer = Timer(const Duration(seconds: 2), _swipePage);
+  }
+
+  void _handleUserInteraction([_]) {
+    _initializeTimer();
+  }
+
+  void _swipePage() {
+    _timer?.cancel();
+    if (this.activePageIndex < widget.pages.length - 1) {
+      _initializeTimer();
+      setState(() {
+        activePageIndex = activePageIndex + 1;
+        nextPageIndex = nextPageIndex + 1;
+        // after next pressed invoke function
+        // this can be used for analytics/page transition
+        if (widget.onTapNextButton != null) {
+          widget.onTapNextButton();
+        }
+      });
+    }
   }
 
   @override
@@ -232,105 +264,110 @@ class _IntroViewsFlutterState extends State<IntroViewsFlutter>
 
     List<PageViewModel> pages = widget.pages;
 
-    return Scaffold(
-      //Stack is used to place components over one another.
-      resizeToAvoidBottomPadding: false,
-      body: Stack(
-        fit: StackFit.expand,
-        children: <Widget>[
-          Page(
-            pageViewModel: pages[activePageIndex],
-            percentVisible: 1.0,
-            columnMainAxisAlignment: widget.columnMainAxisAlignment,
-            onPressedDoneButton: widget.onTapDoneButton,
-            last: activePageIndex == pages.length - 1,
-          ), //Pages
-          PageReveal(
-            //next page reveal
-            revealPercent: slidePercent,
-            child: Page(
-              pageViewModel: pages[nextPageIndex],
-              percentVisible: slidePercent,
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: _handleUserInteraction,
+      onPanUpdate: _handleUserInteraction,
+      child: Scaffold(
+        //Stack is used to place components over one another.
+        resizeToAvoidBottomPadding: false,
+        body: Stack(
+          fit: StackFit.expand,
+          children: <Widget>[
+            Page(
+              pageViewModel: pages[activePageIndex],
+              percentVisible: 1.0,
               columnMainAxisAlignment: widget.columnMainAxisAlignment,
-              last: nextPageIndex == pages.length - 1,
+              onPressedDoneButton: widget.onTapDoneButton,
+              last: activePageIndex == pages.length - 1,
+            ), //Pages
+            PageReveal(
+              //next page reveal
+              revealPercent: slidePercent,
+              child: Page(
+                pageViewModel: pages[nextPageIndex],
+                percentVisible: slidePercent,
+                columnMainAxisAlignment: widget.columnMainAxisAlignment,
+                last: nextPageIndex == pages.length - 1,
+              ),
+            ), //PageReveal
+
+            PagerIndicator(
+              //bottom page indicator
+              viewModel: PagerIndicatorViewModel(
+                pages,
+                activePageIndex,
+                slideDirection,
+                slidePercent,
+              ),
+            ), //PagerIndicator
+
+            PageIndicatorButtons(
+              //Skip and Done Buttons
+              textStyle: textStyle,
+              activePageIndex: activePageIndex,
+              totalPages: pages.length,
+              onPressedDoneButton: widget.onTapDoneButton,
+              //void Callback to be executed after pressing done button
+              slidePercent: slidePercent,
+              slideDirection: slideDirection,
+              onPressedSkipButton: () {
+                //method executed on pressing skip button
+                setState(() {
+                  activePageIndex = pages.length - 1;
+                  nextPageIndex = activePageIndex;
+                  // after skip pressed invoke function
+                  // this can be used for analytics/page transition
+                  if (widget.onTapSkipButton != null) {
+                    widget.onTapSkipButton();
+                  }
+                });
+              },
+              showSkipButton: widget.showSkipButton,
+              showNextButton: widget.showNextButton,
+              showBackButton: widget.showBackButton,
+              showDoneButton: widget.showDoneButton,
+              onPressedNextButton: () {
+                //method executed on pressing next button
+                setState(() {
+                  activePageIndex = activePageIndex + 1;
+                  nextPageIndex = nextPageIndex + 1;
+                  // after next pressed invoke function
+                  // this can be used for analytics/page transition
+                  if (widget.onTapNextButton != null) {
+                    widget.onTapNextButton();
+                  }
+                });
+              },
+              onPressedBackButton: () {
+                //method executed on pressing back button
+                setState(() {
+                  activePageIndex = activePageIndex - 1;
+                  nextPageIndex = nextPageIndex - 1;
+                  // after next pressed invoke function
+                  // this can be used for analytics/page transition
+                  if (widget.onTapBackButton != null) {
+                    widget.onTapBackButton();
+                  }
+                });
+              },
+              nextText: widget.nextText,
+              doneText: widget.doneText,
+              backText: widget.backText,
+              skipText: widget.skipText,
+              doneButtonPersist: widget.doneButtonPersist,
             ),
-          ), //PageReveal
 
-          PagerIndicator(
-            //bottom page indicator
-            viewModel: PagerIndicatorViewModel(
-              pages,
-              activePageIndex,
-              slideDirection,
-              slidePercent,
-            ),
-          ), //PagerIndicator
-
-          PageIndicatorButtons(
-            //Skip and Done Buttons
-            textStyle: textStyle,
-            activePageIndex: activePageIndex,
-            totalPages: pages.length,
-            onPressedDoneButton: widget.onTapDoneButton,
-            //void Callback to be executed after pressing done button
-            slidePercent: slidePercent,
-            slideDirection: slideDirection,
-            onPressedSkipButton: () {
-              //method executed on pressing skip button
-              setState(() {
-                activePageIndex = pages.length - 1;
-                nextPageIndex = activePageIndex;
-                // after skip pressed invoke function
-                // this can be used for analytics/page transition
-                if (widget.onTapSkipButton != null) {
-                  widget.onTapSkipButton();
-                }
-              });
-            },
-            showSkipButton: widget.showSkipButton,
-            showNextButton: widget.showNextButton,
-            showBackButton: widget.showBackButton,
-            showDoneButton: widget.showDoneButton,
-            onPressedNextButton: () {
-              //method executed on pressing next button
-              setState(() {
-                activePageIndex = activePageIndex + 1;
-                nextPageIndex = nextPageIndex + 1;
-                // after next pressed invoke function
-                // this can be used for analytics/page transition
-                if (widget.onTapNextButton != null) {
-                  widget.onTapNextButton();
-                }
-              });
-            },
-            onPressedBackButton: () {
-              //method executed on pressing back button
-              setState(() {
-                activePageIndex = activePageIndex - 1;
-                nextPageIndex = nextPageIndex - 1;
-                // after next pressed invoke function
-                // this can be used for analytics/page transition
-                if (widget.onTapBackButton != null) {
-                  widget.onTapBackButton();
-                }
-              });
-            },
-            nextText: widget.nextText,
-            doneText: widget.doneText,
-            backText: widget.backText,
-            skipText: widget.skipText,
-            doneButtonPersist: widget.doneButtonPersist,
-          ),
-
-          PageDragger(
-            //Used for gesture control
-            fullTransitionPX: widget.fullTransition,
-            canDragLeftToRight: activePageIndex > 0,
-            canDragRightToLeft: activePageIndex < pages.length - 1,
-            slideUpdateStream: this.slideUpdateStream,
-          ), //PageDragger
-        ], //Widget
-      ), //Stack
+            PageDragger(
+              //Used for gesture control
+              fullTransitionPX: widget.fullTransition,
+              canDragLeftToRight: activePageIndex > 0,
+              canDragRightToLeft: activePageIndex < pages.length - 1,
+              slideUpdateStream: this.slideUpdateStream,
+            ), //PageDragger
+          ], //Widget
+        ), //Stack
+      ),
     ); //Scaffold
   }
 }
