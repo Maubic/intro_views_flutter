@@ -12,7 +12,7 @@ import 'package:intro_views_flutter/Models/pager_indicator_view_model.dart';
 import 'package:intro_views_flutter/Models/slide_update_model.dart';
 import 'package:intro_views_flutter/UI/page_indicator_buttons.dart';
 import 'package:intro_views_flutter/UI/pager_indicator.dart';
-import 'package:intro_views_flutter/UI/page.dart';
+import 'package:intro_views_flutter/UI/page.dart' as IntroPage;
 
 /// This is the IntroViewsFlutter widget of app which is a stateful widget as its state is dynamic and updates asynchronously.
 class IntroViewsFlutter extends StatefulWidget {
@@ -278,7 +278,7 @@ class _IntroViewsFlutterState extends State<IntroViewsFlutter>
         body: Stack(
           fit: StackFit.expand,
           children: <Widget>[
-            Page(
+            IntroPage.Page(
               pageViewModel: pages[activePageIndex],
               percentVisible: 1.0,
               columnMainAxisAlignment: widget.columnMainAxisAlignment,
@@ -288,7 +288,7 @@ class _IntroViewsFlutterState extends State<IntroViewsFlutter>
             PageReveal(
               //next page reveal
               revealPercent: slidePercent,
-              child: Page(
+              child: IntroPage.Page(
                 pageViewModel: pages[nextPageIndex],
                 percentVisible: slidePercent,
                 columnMainAxisAlignment: widget.columnMainAxisAlignment,
