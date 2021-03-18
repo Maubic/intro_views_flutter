@@ -274,7 +274,7 @@ class _IntroViewsFlutterState extends State<IntroViewsFlutter>
       onPanUpdate: _handleUserInteraction,
       child: Scaffold(
         //Stack is used to place components over one another.
-        resizeToAvoidBottomPadding: false,
+        // resizeToAvoidBottomPadding: false,
         body: Stack(
           fit: StackFit.expand,
           children: <Widget>[
