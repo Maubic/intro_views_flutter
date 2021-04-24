@@ -12,12 +12,12 @@ class Page extends StatelessWidget {
   /// [MainAxisAligment]
   final MainAxisAlignment columnMainAxisAlignment;
 
-  final VoidCallback onPressedDoneButton; //Callback for Done Button
+  final VoidCallback? onPressedDoneButton; //Callback for Done Button
   final bool last;
 
   //Constructor
   Page({
-    this.pageViewModel,
+    required this.pageViewModel,
     this.percentVisible = 1.0,
     this.columnMainAxisAlignment = MainAxisAlignment.spaceAround,
     this.onPressedDoneButton,
@@ -116,15 +116,13 @@ class Page extends StatelessWidget {
                 pageViewModel: pageViewModel,
               ),
             ), //Transform
-            pageViewModel.title != null
-                ? Flexible(
-                    flex: 2,
-                    child: new _TitlePageTransform(
-                      percentVisible: percentVisible,
-                      pageViewModel: pageViewModel,
-                    ),
-                  )
-                : Container(), //Transform
+            Flexible(
+              flex: 2,
+              child: new _TitlePageTransform(
+                percentVisible: percentVisible,
+                pageViewModel: pageViewModel,
+              ),
+            ),
             Flexible(
               flex: 2,
               child: new _BodyPageTransform(
@@ -161,12 +159,10 @@ class Page extends StatelessWidget {
             mainAxisAlignment: columnMainAxisAlignment,
             mainAxisSize: MainAxisSize.max,
             children: <Widget>[
-              pageViewModel.title != null
-                  ? _TitlePageTransform(
-                      percentVisible: percentVisible,
-                      pageViewModel: pageViewModel,
-                    )
-                  : Container(), //Transform
+              _TitlePageTransform(
+                percentVisible: percentVisible,
+                pageViewModel: pageViewModel,
+              ),
               _BodyPageTransform(
                 percentVisible: percentVisible,
                 pageViewModel: pageViewModel,
@@ -182,12 +178,12 @@ class Page extends StatelessWidget {
 class _ButtonPageTransform extends StatelessWidget {
   final double percentVisible;
   final PageViewModel pageViewModel;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
 
   const _ButtonPageTransform({
-    Key key,
-    @required this.percentVisible,
-    @required this.pageViewModel,
+    Key? key,
+    required this.percentVisible,
+    required this.pageViewModel,
     this.onPressed,
   }) : super(key: key);
 
@@ -196,11 +192,14 @@ class _ButtonPageTransform extends StatelessWidget {
     return new Transform(
       transform:
           new Matrix4.translationValues(0.0, 30.0 * (1 - percentVisible), 0.0),
-      child: RaisedButton(
+      child: ElevatedButton(
         onPressed: onPressed ?? () {},
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(32.0)),
-        color: pageViewModel.buttonColor,
+        style: ButtonStyle(
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(32.0)),
+            ),
+            backgroundColor:
+                MaterialStateProperty.all<Color>(pageViewModel.buttonColor!)),
         child: pageViewModel.buttonText,
       ),
     );
@@ -214,9 +213,9 @@ class _BodyPageTransform extends StatelessWidget {
   final PageViewModel pageViewModel;
 
   const _BodyPageTransform({
-    Key key,
-    @required this.percentVisible,
-    @required this.pageViewModel,
+    Key? key,
+    required this.percentVisible,
+    required this.pageViewModel,
   }) : super(key: key);
 
   @override
@@ -251,9 +250,9 @@ class _ImagePageTransform extends StatelessWidget {
   final PageViewModel pageViewModel;
 
   const _ImagePageTransform({
-    Key key,
-    @required this.percentVisible,
-    @required this.pageViewModel,
+    Key? key,
+    required this.percentVisible,
+    required this.pageViewModel,
   }) : super(key: key);
 
   @override
@@ -279,9 +278,9 @@ class _TitlePageTransform extends StatelessWidget {
   final PageViewModel pageViewModel;
 
   const _TitlePageTransform({
-    Key key,
-    @required this.percentVisible,
-    @required this.pageViewModel,
+    Key? key,
+    required this.percentVisible,
+    required this.pageViewModel,
   }) : super(key: key);
 
   @override

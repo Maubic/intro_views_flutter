@@ -20,7 +20,7 @@ class IntroViewsFlutter extends StatefulWidget {
   final List<PageViewModel> pages;
 
   /// Callback on Done Button Pressed
-  final VoidCallback onTapDoneButton;
+  final VoidCallback? onTapDoneButton;
 
   /// set the Text Color for skip, done buttons
   ///
@@ -42,16 +42,16 @@ class IntroViewsFlutter extends StatefulWidget {
   /// TextStyles for done, skip Buttons
   ///
   /// overrides [pageButtonFontFamily] [pageButtonsColor] [pageButtonTextSize]
-  final TextStyle pageButtonTextStyles;
+  final TextStyle? pageButtonTextStyles;
 
   /// run a function after skip Button pressed
-  final VoidCallback onTapSkipButton;
+  final VoidCallback? onTapSkipButton;
 
   /// run a function after next Button pressed
-  final VoidCallback onTapNextButton;
+  final VoidCallback? onTapNextButton;
 
   /// run a function after back Button pressed
-  final VoidCallback onTapBackButton;
+  final VoidCallback? onTapBackButton;
 
   /// set the Text Size for skip, done buttons
   ///
@@ -61,7 +61,7 @@ class IntroViewsFlutter extends StatefulWidget {
   /// set the Font Family for skip, done buttons
   ///
   /// gets overridden by [pageButtonTextStyles]
-  final String pageButtonFontFamily;
+  final String? pageButtonFontFamily;
 
   /// Override 'DONE' Text with Your Own Text,
   /// typicaly a Text Widget
@@ -102,7 +102,7 @@ class IntroViewsFlutter extends StatefulWidget {
 
   IntroViewsFlutter(
     this.pages, {
-    Key key,
+    Key? key,
     this.onTapDoneButton,
     this.showSkipButton = true,
     this.pageButtonTextStyles,
@@ -114,7 +114,7 @@ class IntroViewsFlutter extends StatefulWidget {
     this.pageButtonFontFamily,
     this.onTapSkipButton,
     this.onTapNextButton,
-    this.pageButtonsColor,
+    this.pageButtonsColor = const Color(0x88FFFFFF),
     this.doneText = const Text("DONE"),
     this.nextText = const Text("NEXT"),
     this.skipText = const Text("SKIP"),
@@ -135,21 +135,21 @@ class IntroViewsFlutter extends StatefulWidget {
 class _IntroViewsFlutterState extends State<IntroViewsFlutter>
     with TickerProviderStateMixin {
   // timer for autoswipe
-  Timer _timer;
-  int autoSwipeDelay;
+  Timer? _timer;
+  late int autoSwipeDelay;
 
-  StreamController<SlideUpdate>
+  late StreamController<SlideUpdate>
       // ignore: close_sinks
       slideUpdateStream; //Stream controller is used to get all the updates when user slides across screen.
 
-  AnimatedPageDragger
+  AnimatedPageDragger?
       animatedPageDragger; //When user stops dragging then by using this page automatically drags.
 
   int activePageIndex = 0; //active page index
   int nextPageIndex = 0; //next page index
   SlideDirection slideDirection = SlideDirection.none; //slide direction
   double slidePercent = 0.0; //slide percentage (0.0 to 1.0)
-  StreamSubscription<SlideUpdate> slideUpdateStream$;
+  StreamSubscription<SlideUpdate>? slideUpdateStream$;
 
   @override
   void initState() {
@@ -200,7 +200,7 @@ class _IntroViewsFlutterState extends State<IntroViewsFlutter>
             nextPageIndex = activePageIndex;
           }
           //Run the animation
-          animatedPageDragger.run();
+          animatedPageDragger?.run();
         }
         //when animating
         else if (event.updateType == UpdateType.animating) {
@@ -226,9 +226,7 @@ class _IntroViewsFlutterState extends State<IntroViewsFlutter>
 
   // initialize timer when handles user input
   void _initializeTimer() {
-    if (_timer != null) {
-      _timer.cancel();
-    }
+    _timer?.cancel();
     _timer = Timer(Duration(milliseconds: autoSwipeDelay), _swipePage);
   }
 
@@ -252,7 +250,7 @@ class _IntroViewsFlutterState extends State<IntroViewsFlutter>
   void dispose() {
     slideUpdateStream$?.cancel();
     animatedPageDragger?.dispose();
-    slideUpdateStream?.close();
+    slideUpdateStream.close();
     super.dispose();
   }
 
@@ -261,10 +259,10 @@ class _IntroViewsFlutterState extends State<IntroViewsFlutter>
   @override
   Widget build(BuildContext context) {
     TextStyle textStyle = TextStyle(
-            fontSize: widget.pageButtonTextSize ?? 18.0,
-            color: widget.pageButtonsColor ?? const Color(0x88FFFFFF),
-            fontFamily: widget.pageButtonFontFamily)
-        .merge(widget.pageButtonTextStyles);
+      fontSize: widget.pageButtonTextSize,
+      color: widget.pageButtonsColor,
+      fontFamily: widget.pageButtonFontFamily,
+    ).merge(widget.pageButtonTextStyles);
 
     List<PageViewModel> pages = widget.pages;
 
@@ -323,7 +321,7 @@ class _IntroViewsFlutterState extends State<IntroViewsFlutter>
                   // after skip pressed invoke function
                   // this can be used for analytics/page transition
                   if (widget.onTapSkipButton != null) {
-                    widget.onTapSkipButton();
+                    widget.onTapSkipButton!();
                   }
                 });
               },
@@ -339,7 +337,7 @@ class _IntroViewsFlutterState extends State<IntroViewsFlutter>
                   // after next pressed invoke function
                   // this can be used for analytics/page transition
                   if (widget.onTapNextButton != null) {
-                    widget.onTapNextButton();
+                    widget.onTapNextButton!();
                   }
                 });
               },
@@ -351,7 +349,7 @@ class _IntroViewsFlutterState extends State<IntroViewsFlutter>
                   // after next pressed invoke function
                   // this can be used for analytics/page transition
                   if (widget.onTapBackButton != null) {
-                    widget.onTapBackButton();
+                    widget.onTapBackButton!();
                   }
                 });
               },

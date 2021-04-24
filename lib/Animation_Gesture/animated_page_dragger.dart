@@ -16,15 +16,15 @@ class AnimatedPageDragger {
   final TransitionGoal transitionGoal;
 
   //Animation controller
-  AnimationController completionAnimationController;
+  late AnimationController completionAnimationController;
 
   //Constructor
   AnimatedPageDragger({
-    this.slideDirection,
-    this.transitionGoal,
-    double slidePercent,
-    StreamController<SlideUpdate> slideUpdateStream,
-    TickerProvider vsync,
+    required this.slideDirection,
+    required this.transitionGoal,
+    required double slidePercent,
+    required StreamController<SlideUpdate> slideUpdateStream,
+    required TickerProvider vsync,
   }) {
     final startSlidePercent = slidePercent;
     double endSlidePercent;
@@ -53,7 +53,8 @@ class AnimatedPageDragger {
         duration: duration, vsync: vsync)
       ..addListener(() {
         final slidePercent = lerpDouble(startSlidePercent, endSlidePercent,
-            completionAnimationController.value);
+                completionAnimationController.value) ??
+            0.0;
 
         //Adding to slide update stream
         slideUpdateStream.add(

@@ -9,7 +9,7 @@ class PagerIndicatorViewModel {
   final SlideDirection slideDirection;
   final double slidePercent;
 
-  PagerIndicatorViewModel(
+  const PagerIndicatorViewModel(
     this.pages,
     this.activeIndex,
     this.slideDirection,

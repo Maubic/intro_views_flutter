@@ -6,7 +6,7 @@ import 'package:intro_views_flutter/Models/page_button_view_model.dart';
 
 class DefaultButton extends StatelessWidget {
   //callback for skip button
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
 
   //view model
   final PageButtonViewModel pageButtonViewModel;
@@ -14,9 +14,9 @@ class DefaultButton extends StatelessWidget {
 
   //Constructor
   DefaultButton({
-    this.onTap,
-    this.pageButtonViewModel,
-    this.child,
+    required this.onTap,
+    required this.pageButtonViewModel,
+    required this.child,
   });
 
   @override
@@ -34,7 +34,7 @@ class DefaultButton extends StatelessWidget {
       opacity = pageButtonViewModel.slidePercent;
     }
 
-    return FlatButton(
+    return TextButton(
       onPressed: onTap,
       child: Opacity(
         opacity: opacity,
@@ -51,7 +51,7 @@ class DefaultButton extends StatelessWidget {
 
 class DoneButton extends StatelessWidget {
   //Callback
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
 
   //View Model
   final PageButtonViewModel pageButtonViewModel;
@@ -59,9 +59,9 @@ class DoneButton extends StatelessWidget {
 
   //Constructor
   DoneButton({
-    this.onTap,
-    this.pageButtonViewModel,
-    this.child,
+    required this.onTap,
+    required this.pageButtonViewModel,
+    required this.child,
   });
 
   @override
@@ -75,13 +75,13 @@ class DoneButton extends StatelessWidget {
       opacity = 1.0 - pageButtonViewModel.slidePercent;
     }
 
-    return FlatButton(
+    return TextButton(
       onPressed: onTap,
       child: Opacity(
         opacity: opacity,
         child: DefaultTextStyle.merge(
           style: style,
-          child: child, //Text
+          child: child,
         ),
       ), //Opacity
     ); //FlatButton
@@ -92,10 +92,10 @@ class PageIndicatorButtons extends StatelessWidget {
   //Some variables
   final int activePageIndex;
   final int totalPages;
-  final VoidCallback onPressedDoneButton; //Callback for Done Button
-  final VoidCallback onPressedNextButton;
-  final VoidCallback onPressedBackButton;
-  final VoidCallback onPressedSkipButton; //Callback for Skip Button
+  final VoidCallback? onPressedDoneButton; //Callback for Done Button
+  final VoidCallback? onPressedNextButton;
+  final VoidCallback? onPressedBackButton;
+  final VoidCallback? onPressedSkipButton; //Callback for Skip Button
   final SlideDirection slideDirection;
   final double slidePercent;
   final bool showSkipButton;
@@ -184,25 +184,26 @@ class PageIndicatorButtons extends StatelessWidget {
   }
 
   //Constructor
-  PageIndicatorButtons(
-      {@required this.activePageIndex,
-      @required this.totalPages,
-      this.onPressedDoneButton,
-      this.slideDirection,
-      this.slidePercent,
-      this.onPressedSkipButton,
-      this.onPressedNextButton,
-      this.onPressedBackButton,
-      this.showSkipButton,
-      this.skipText,
-      this.nextText,
-      this.doneText,
-      this.textStyle,
-      this.doneButtonPersist,
-      this.showNextButton = true,
-      this.showBackButton = true,
-      this.showDoneButton = true,
-      this.backText});
+  PageIndicatorButtons({
+    required this.activePageIndex,
+    required this.totalPages,
+    this.onPressedDoneButton,
+    required this.slideDirection,
+    required this.slidePercent,
+    this.onPressedSkipButton,
+    this.onPressedNextButton,
+    this.onPressedBackButton,
+    required this.showSkipButton,
+    required this.skipText,
+    required this.nextText,
+    required this.doneText,
+    required this.textStyle,
+    required this.doneButtonPersist,
+    this.showNextButton = true,
+    this.showBackButton = true,
+    this.showDoneButton = true,
+    required this.backText,
+  });
 
   @override
   Widget build(BuildContext context) {

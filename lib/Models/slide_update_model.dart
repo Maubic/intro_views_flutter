@@ -7,7 +7,7 @@ class SlideUpdate {
   final SlideDirection direction;
   final double slidePercent;
 
-  SlideUpdate(
+  const SlideUpdate(
     this.direction,
     this.slidePercent,
     this.updateType,

@@ -9,9 +9,9 @@ class PageButtonViewModel {
   final SlideDirection slideDirection;
 
   PageButtonViewModel({
-    this.slidePercent,
-    this.totalPages,
-    this.activePageIndex,
-    this.slideDirection,
+    required this.slidePercent,
+    required this.totalPages,
+    required this.activePageIndex,
+    required this.slideDirection,
   });
 }

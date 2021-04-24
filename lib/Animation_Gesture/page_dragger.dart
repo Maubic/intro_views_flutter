@@ -16,11 +16,11 @@ class PageDragger extends StatefulWidget {
 
   //Constructor
   PageDragger({
-    this.canDragLeftToRight,
-    this.canDragRightToLeft,
-    this.slideUpdateStream,
+    required this.canDragLeftToRight,
+    required this.canDragRightToLeft,
+    required this.slideUpdateStream,
     this.fullTransitionPX = FULL_TARNSITION_PX,
-  }) : assert(fullTransitionPX != null);
+  });
 
   @override
   _PageDraggerState createState() => _PageDraggerState();
@@ -28,8 +28,8 @@ class PageDragger extends StatefulWidget {
 
 class _PageDraggerState extends State<PageDragger> {
   //Variables
-  Offset dragStart;
-  SlideDirection slideDirection;
+  Offset? dragStart;
+  late SlideDirection slideDirection;
   double slidePercent = 0.0;
 
   // This methods executes when user starts dragging.
@@ -43,7 +43,7 @@ class _PageDraggerState extends State<PageDragger> {
       //Getting new position details
       final newPosition = details.globalPosition;
       //Change in position in x
-      final dx = dragStart.dx - newPosition.dx;
+      final dx = dragStart!.dx - newPosition.dx;
 
       //predicting slide direction
       if (dx > 0.0 && widget.canDragRightToLeft) {
@@ -63,16 +63,26 @@ class _PageDraggerState extends State<PageDragger> {
       }
 
       // Adding to slideUpdateStream
-      widget.slideUpdateStream
-          .add(SlideUpdate(slideDirection, slidePercent, UpdateType.dragging));
+      widget.slideUpdateStream.add(
+        SlideUpdate(
+          slideDirection,
+          slidePercent,
+          UpdateType.dragging,
+        ),
+      );
     }
   }
 
   // This method executes when user ends dragging.
   onDragEnd(DragEndDetails details) {
     // Adding to slideUpdateStream
-    widget.slideUpdateStream.add(SlideUpdate(
-        SlideDirection.none, slidePercent, UpdateType.doneDragging));
+    widget.slideUpdateStream.add(
+      SlideUpdate(
+        SlideDirection.none,
+        slidePercent,
+        UpdateType.doneDragging,
+      ),
+    );
 
     //Making dragStart to null for the reallocation
     dragStart = null;

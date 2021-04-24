@@ -12,7 +12,7 @@ class PagerIndicator extends StatelessWidget {
 
   //Constructor
   PagerIndicator({
-    this.viewModel,
+    required this.viewModel,
   });
 
   @override

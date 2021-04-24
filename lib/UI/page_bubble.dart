@@ -10,7 +10,7 @@ class PageBubble extends StatelessWidget {
 
   //Constructor
   PageBubble({
-    this.viewModel,
+    required this.viewModel,
   });
 
   @override
@@ -22,11 +22,7 @@ class PageBubble extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(10.0),
           child: Container(
-            width: lerpDouble(
-                20.0,
-                45.0,
-                viewModel
-                    .activePercent), //This method return in between values according to active percent.
+            width: lerpDouble(20.0, 45.0, viewModel.activePercent),
             height: lerpDouble(20.0, 45.0, viewModel.activePercent),
             decoration: BoxDecoration(
               shape: BoxShape.circle,
@@ -51,7 +47,7 @@ class PageBubble extends StatelessWidget {
                   ? FractionallySizedBox(
                       widthFactor: 0.8,
                       child: Image.asset(
-                        viewModel.iconAssetPath,
+                        viewModel.iconAssetPath!,
                         color: viewModel.iconColor,
                       ),
                     )
