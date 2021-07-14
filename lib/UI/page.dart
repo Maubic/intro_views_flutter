@@ -192,12 +192,13 @@ class _ButtonPageTransform extends StatelessWidget {
     return new Transform(
       transform:
           new Matrix4.translationValues(0.0, 30.0 * (1 - percentVisible), 0.0),
-      child: TextButton(
+      child: ElevatedButton(
         onPressed: onPressed ?? () {},
         style: ButtonStyle(
             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(32.0)),
             ),
+            elevation: 0,
             backgroundColor: pageViewModel.buttonColor != null
                 ? MaterialStateProperty.all<Color>(pageViewModel.buttonColor!)
                 : null),
