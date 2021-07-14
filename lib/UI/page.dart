@@ -192,7 +192,7 @@ class _ButtonPageTransform extends StatelessWidget {
     return new Transform(
       transform:
           new Matrix4.translationValues(0.0, 30.0 * (1 - percentVisible), 0.0),
-      child: FlatButton(
+      child: TextButton(
         onPressed: onPressed ?? () {},
         style: ButtonStyle(
             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
