@@ -198,7 +198,7 @@ class _ButtonPageTransform extends StatelessWidget {
             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(32.0)),
             ),
-            elevation: 0,
+            elevation: 0.0,
             backgroundColor: pageViewModel.buttonColor != null
                 ? MaterialStateProperty.all<Color>(pageViewModel.buttonColor!)
                 : null),
