@@ -29,7 +29,7 @@ class PageViewModel {
   /// _typicaly a Text Widget_
   ///
   /// @Default Textstyle `color: Colors.white, fontSize: 24.0`
-  final Widget body;
+  final Widget? body;
 
   /// set default TextStyle for both title and body
   final TextStyle? textStyle;
@@ -58,7 +58,7 @@ class PageViewModel {
     this.bubbleBackgroundColor = const Color(0x88FFFFFF),
     this.iconColor,
     this.title = const SizedBox(),
-    this.body = const SizedBox(),
+    this.body,
     this.mainImage = const SizedBox(),
     this.bubble,
     this.textStyle,

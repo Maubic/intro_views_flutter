@@ -154,6 +154,7 @@ class Page extends StatelessWidget {
             pageViewModel: pageViewModel,
           ),
         ), //Transform
+        if(pageViewModel.body != null)
         Flexible(
           child: Column(
             mainAxisAlignment: columnMainAxisAlignment,
@@ -234,12 +235,12 @@ class _BodyPageTransform extends StatelessWidget {
               child: DefaultTextStyle.merge(
                 style: pageViewModel.bodyTextStyle,
                 textAlign: TextAlign.center,
-                child: pageViewModel.body,
+                child: pageViewModel.body?? SizedBox(),
               ),
             )
           : DefaultTextStyle.merge(
               style: pageViewModel.bodyTextStyle,
-              child: pageViewModel.body,
+              child: pageViewModel.body?? SizedBox(),
             ),
     );
   }
